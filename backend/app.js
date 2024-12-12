@@ -35,10 +35,14 @@ app.use(express.json()); // Built-in body parser middleware to handle JSON reque
 app.use(cookieParser()); // Cookie parser middleware
 
 // CORS configuration
-app.use(cors({ origin: ['http://localhost:3001', 
- 'http://192.168.178.91:3001', 
- 'https://alemumolla-ecommerce.netlify.app'], // Include your Netlify URL methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
-credentials: true // Enable sending cookies 
+app.use(cors({
+  origin: [
+    'http://localhost:3001',
+    'http://192.168.178.91:3001',
+    'https://alemumolla-ecommerce.netlify.app'
+  ], // Include your Netlify URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true // Enable sending cookies
 }));
 
 // Session middleware
