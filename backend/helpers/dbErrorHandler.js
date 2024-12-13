@@ -1,10 +1,5 @@
 "use strict";
 
-/**
- * Get unique error field name
- * @param {Object} error - The error object
- * @returns {string} - The unique error message
- */
 const uniqueMessage = (error) => {
     let output;
     try {

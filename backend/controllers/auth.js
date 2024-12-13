@@ -144,29 +144,6 @@ export const isAuth = (req, res, next) => {
   next();
 };
 
-
-// Middleware to require signin
-// export const requireSignin = expressjwt({
-//     secret: process.env.JWT_SECRET,
-//     algorithms: ['HS256'], // Specify the algorithm used
-//     userProperty: 'auth'
-// });
-
-// export const isAuth = (req, res, next) => {
-//     console.log('Auth Middleware: Checking if user is authenticated...');
-//     console.log('Request auth:', req.auth);
-//     console.log('Request profile:', req.profile);
-
-//     let user = req.profile && req.auth && req.profile._id.toString() === req.auth._id.toString();
-//     if (!user) {
-//         console.log('Authorization failed: User not authenticated or authorized.');
-//         return res.status(403).json({
-//             error: 'Access denied'
-//         });
-//     }
-//     next();
-// };
-
 export const isAdmin = (req, res, next) => {
     if (req.profile.role === 0) {
         return res.status(403).json({
@@ -273,7 +250,6 @@ export const forgotPassword = async (req, res) => {
 
 
 // Reset Password
-
 export const resetPassword = async (req, res) => {
     const { token, newPassword } = req.body;
 
@@ -283,8 +259,11 @@ export const resetPassword = async (req, res) => {
             resetPasswordExpires: { $gt: Date.now() }
         });
 
-        console.log('Received token:', token); // Debug statement
+        console.log('Token from request:', token); // Debug statement
+        console.log('Current server time:', new Date()); // Debug statement
         console.log('Found user:', user); // Debug statement
+        console.log('Token in database:', user ? user.resetPasswordToken : 'No user found');
+        console.log('Token expiration time:', user ? new Date(user.resetPasswordExpires) : 'No user found');
 
         if (!user) {
             return res.status(400).json({ error: 'Invalid or expired token.' });
@@ -305,6 +284,7 @@ export const resetPassword = async (req, res) => {
         res.status(500).json({ error: 'Error resetting password.' });
     }
 };
+
 
 
 

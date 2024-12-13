@@ -16,13 +16,13 @@ router.get('/auth/google/callback',
     console.log(`Request Session at callback start: ${JSON.stringify(req.session)}`);
     next();
   },
-  passport.authenticate('google', { failureRedirect: 'http://localhost:3001/signin' }),
+  passport.authenticate('google', { failureRedirect: 'https://alemumolla-ecommerce.netlify.app/signin' }),
   (req, res, next) => {
     console.log('Google OAuth: User authenticated, redirecting to client');
     console.log('Authenticated user:', req.user);
     if (!req.user) {
       console.error('Google OAuth: Authentication failed, no user found');
-      return res.redirect('http://localhost:3001/signin');
+      return res.redirect('https://alemumolla-ecommerce.netlify.app/signin');
     }
     req.logIn(req.user, (err) => {
       if (err) {
@@ -31,7 +31,7 @@ router.get('/auth/google/callback',
       }
       console.log('Google OAuth: User logged in successfully, redirecting to home page');
       console.log('Session:', req.session);
-      res.redirect('http://localhost:3001');
+      res.redirect('https://alemumolla-ecommerce.netlify.app');
     });
   }
 );
@@ -49,13 +49,13 @@ router.get('/auth/github/callback',
     console.log(`Request Session at callback start: ${JSON.stringify(req.session)}`);
     next();
   },
-  passport.authenticate('github', { failureRedirect: 'http://localhost:3001/signin' }),
+  passport.authenticate('github', { failureRedirect: 'https://alemumolla-ecommerce.netlify.app/signin' }),
   (req, res, next) => {
     console.log('GitHub OAuth: User authenticated, redirecting to client');
     console.log('Authenticated user:', req.user);
     if (!req.user) {
       console.error('GitHub OAuth: Authentication failed, no user found');
-      return res.redirect('http://localhost:3001/signin');
+      return res.redirect('https://alemumolla-ecommerce.netlify.app/signin');
     }
     req.logIn(req.user, (err) => {
       if (err) {
@@ -64,7 +64,7 @@ router.get('/auth/github/callback',
       }
       console.log('GitHub OAuth: User logged in successfully, redirecting to home page');
       console.log('Session:', req.session);
-      res.redirect('http://localhost:3001');
+      res.redirect('https://alemumolla-ecommerce.netlify.app');
     });
   }
 );

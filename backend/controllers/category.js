@@ -1,5 +1,4 @@
 import Category from '../models/category.js';
-import Product from '../models/product.js';
 import { errorHandler } from '../helpers/dbErrorHandler.js';
 
 export const categoryById = async (req, res, next, id) => {
