@@ -25,34 +25,32 @@ export const generateRefreshToken = (user) => {
 };
 
 // Sign up a new user with email verification
-
-export const signup = asyncHandler(async (req, res) => {
+export const signup = async (req, res) => {
     const { name, email, password } = req.body;
 
     // Validate input fields
     if (!name || !email || !password) {
-        console.log('Validation error: Missing fields'); // Debugging
         return res.status(400).json({ error: 'All fields are required' });
     }
 
     // Validate password length
     if (password.length < 8) {
-        console.log('Validation error: Password too short'); // Debugging
         return res.status(400).json({ error: 'Password must be at least 8 characters long' });
     }
 
     try {
         const existsEmail = await User.findOne({ email });
         if (existsEmail) {
-            console.log('Validation error: Email already exists'); // Debugging
             return res.status(422).json({ error: 'Email already exists. Please sign in.' });
         }
 
         const verificationToken = jwt.sign({ email }, process.env.EMAIL_VERIFICATION_SECRET, { expiresIn: '24h' });
+
         const user = new User({ name, email, password, verificationToken });
         await user.save();
 
         const verificationUrl = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
+
         const emailHtml = `
             <h2>Please verify your email</h2>
             <p>Click <a href="${verificationUrl}">here</a> to verify your email. This link will expire in 24 hours.</p>
@@ -60,18 +58,17 @@ export const signup = asyncHandler(async (req, res) => {
 
         await transporter.sendMail({
             to: email,
-            from: `"Alemu Molla" <${process.env.EMAIL_FROM}>`,
+            from:`"Alemu Molla" <${process.env.EMAIL_FROM}>`, // Ensure this is correctly set
             subject: 'Email Verification',
-            html: emailHtml,
+            html: emailHtml
         });
 
-        console.log('Verification email sent to:', email); // Debugging
         res.status(201).json({ message: 'Verification email sent. Please check your inbox.' });
     } catch (err) {
-        console.error('Error registering user:', err); // Debugging
+        console.error(err);
         res.status(400).json({ error: 'Error registering user. Please try again.' });
     }
-});
+};
 
 // Sign in an existing user
 export const signin = async (req, res) => {
